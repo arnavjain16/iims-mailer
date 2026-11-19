@@ -1,5 +1,9 @@
+# startup mailer lives in its own folder / future repo
+startups/
+# page cache from the scripts
 cache/
-scan_log.txt
 __pycache__/
 *.pyc
 ~$*
+# third-party professor list: inspected only, not used as a data source
+Profs Database*.xlsx

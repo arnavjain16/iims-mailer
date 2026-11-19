@@ -1,26 +1,146 @@
-# DECISIONS.md: startup cold mailer (the user's answers)
+# DECISIONS.md — the user's answers to Claude's questions
 
-Answers are recorded as given. Open items are marked **PENDING**.
+Answers are recorded as given. Nothing here is guessed; open items are marked **PENDING**.
 
-## 2026-11-11: brief
-- **Goal:** cold-email startups for internships in roles that match the resume: founder's office, strategy, finance, business ops / product, and VC investment analyst. "As many as possible", Mumbai preferred.
-- **Method:** same process as the professor cold mailer (`../STATE.md`, `../DECISIONS.md`): a database, approval before sending, a private GitHub repo, the password kept as a GitHub Secret, scheduled sending so the laptop can be off.
-- ~~Sending account: personal Gmail~~ (replaced on 2026-11-19, see below).
+## Phase 0, batch 1 (2026-11-05)
 
-## 2026-11-19: sending account changed to IITB
-- **Sending account:** **25b2704@iitb.ac.in** only. Gmail is NOT used. SMTP `smtp-auth.iitb.ac.in` port 587 (STARTTLS), normal IITB (LDAP) login. IITB has no app passwords, so the real IITB password is stored only as the GitHub Secret `IITB_PASSWORD` on the private repo, typed by the user on GitHub's website, never in chat or files. The login name is the plain repo variable `IITB_USERNAME`.
-- **Signature email:** 25B2704@iitb.ac.in, so replies come to the sending inbox. Phone +91 8169991371.
-- **Your copy:** every first email is BCC'd to 25b2704@iitb.ac.in (the server keeps no Sent copy for a script).
-- **Replies:** the Gmail reply checker was removed. Replies are not read automatically; mark them with `manage.py replied`. Follow-ups are OFF until the repo variable `FOLLOWUPS_ENABLED` is `true`.
+### What the user is looking for
+- **Type:** Research internship.
+- **Timing:** Winter break, starting **December 2026**, running **at least until end of January 2027**. Flexible to continue for further months.
+- **Remote / on campus:** PENDING (asked in batch 2, not answered yet; asked again in batch 3).
 
-## Carried over from the professor mailer (same rules)
-- Email addresses come only from the organisation's own website. Never guessed or constructed. Each address records the page it was found on.
-- No outward action without the user's explicit yes. Slow ramp-up: start small, then increase.
-- Send slots: 08:00 and 13:00 IST, Monday to Friday, about 1 minute apart (60–75 s).
-- One follow-up after 5 working days with no reply, in the same thread.
-- One resume (`resume.pdf`), attached to every email. Every fact about Arnav comes from it.
+### Subject areas
+- **Primary:** Finance, Economics, Strategy.
+- **Also open to:** "any fields related to the same" (exact adjacent areas PENDING, asked in batch 2).
 
-## Assumptions to confirm (PENDING)
-- Availability line: "winter internship from December 2026 to January 2027, on-site in Mumbai or remotely, and can continue part-time after that."
-- First scheduled slot size: 5 per slot (repo variable `SLOT_LIMIT`), raised after the first replies and bounces are checked.
-- VC partners' personal emails printed on fund websites (India Quotient, Waterbridge, Stellaris, DSG) are NOT used unless the user says so.
+### Institutes
+- IIM Ahmedabad, IIM Bangalore, IIM Calcutta ("IIM ABC"), IIM Lucknow, IIM Mumbai, IIM Kozhikode. That is 6 institutes.
+- **Total professors:** start with roughly **80**.
+- **Professors / departments to avoid:** none.
+- **How to split the 80 across institutes:** PENDING (batch 2).
+
+### Project folder
+- `C:\Users\ARNAV JAIN\Desktop\courses\99_inbox\resume\resume_making\cold-mailer` (approved).
+
+## Phase 0, batch 2 (2026-11-05)
+
+### Resume
+- Saved at `cold-mailer/resume.pdf`. This is the file that gets attached, and the only source of facts about the user in emails.
+- Facts printed on it: Arnav Jain; B.S., Centre for Multidisciplinary Education, IIT Bombay; graduating 2029; **CPI 9.13**; Minor in AI & Data Science (C-MInDS); SPI 9.42 in 2nd semester, ranked 3rd of 35+. Projects: greenwashing seminar (Prof. Ved Beloskar), FinSearch UPI/CBDC (top 10 of 300+ teams), equity research competition (top 10, SPR Auto DCF), PlayAll Sports venue IRR consulting project, WiDS financial modelling (Varun Beverages DCF), Summer of Quant. Associate Consultant, Consulting Core Group, UAC.
+- The resume also shows date of birth and gender. Flagged to the user (their choice whether to keep these).
+
+### Fields (final for now)
+- **Include:** Finance, Economics, Strategy, Public Policy / Economics & Public Policy, Decision Sciences / Business Analytics / Operations Research.
+- **Exclude:** Accounting, Entrepreneurship / Innovation.
+
+### Institute order
+- **Round 1:** IIM Ahmedabad, IIM Bangalore, IIM Calcutta, IIM Lucknow.
+- **Round 2 (later):** IIM Mumbai, IIM Kozhikode.
+- How the ~80 professors map onto these rounds: PENDING (batch 3).
+
+### Email content
+- **Show grades in the email:** YES (CPI 9.13, as printed on the resume).
+
+## Phase 0, batch 3 (2026-11-06, partly answered)
+
+- **Email template:** the user pasted another student's email as the model to follow and asked for phone number and email at the bottom. Adapted draft v1 is in `email_template_draft.md` (NOT approved yet). This replaces the A/B samples in `email_samples.md`.
+- **Email length:** the user wants it SHORT (second example). Short draft v2 is in `email_template_draft.md`.
+- **Phone number (signature):** 8169991371, shown as "+91 8169991371" (the +91 is my formatting, to be confirmed).
+- **Email (signature):** 25B2704@iitb.ac.in.
+- **Sending account:** NOT yet confirmed. The user gave the IITB address in reply to a question that asked about both the signature and the sending account, so this still needs a clear answer.
+- **Still PENDING from batch 3:** approval of short draft v2; remote / on-campus line; round 1 split (~80 professors); whether to keep DOB/gender on the resume PDF.
+
+## Phase 0, batch 4 (2026-11-06): the user's existing professor database
+
+- User uploaded `Profs Database __ Kartik Vuthoo.xlsx` (looks like another student's list) and asked to (1) check it, (2) add more professors in the same domain, (3) research each professor's domain and customise each draft with the user's projects that match it.
+- Contents (checked by script, nothing changed in the file):
+  - Sheet "IIMs  ISB": ~335 rows. IIM A 68, IIM B 52, IIM C 56, IIM K 64, ISB 45, and 50 rows with a blank Institute cell whose emails all end in iiml.ac.in (probably IIM Lucknow, NOT yet confirmed by the user).
+  - 4 rows have no email; 1 email appears twice (ashish@iiml.ac.in); 2 ISB rows have two emails in one cell. No IIM Mumbai rows.
+  - Other sheets: NUS 26, NYU Stern 17, NTU 54 (pasted as text, messy), Cambridge 26, Umich 20, UC Berkeley 155.
+  - Only a department/domain label per professor, no research areas, no page links, no note on where each email came from.
+- Conflict flagged to the user: rule 5 (emails only from the professor's own official page) and rule 8 (no AI web search for professors/fields). The workbook emails are unverified; research areas must come from plain Python scripts reading official pages.
+- PENDING answers: scope (IIMs only vs ISB and foreign universities); which departments to keep; approval of the keyword-rule method for matching projects; target total number; confirm blank-institute rows = IIM Lucknow.
+
+## Phase 0, batch 5 (2026-11-06): answers to the database questions
+
+- **Institutes, round 1 (all in the first batch):** IIM Ahmedabad, Bangalore, Calcutta, Lucknow, Kozhikode, and Mumbai. (The message said "Cozy Kore"; read as Kozhikode.)
+- **Blank-institute rows in the database = IIM Lucknow:** confirmed.
+- **Departments:** the user said "right now just apply to everyone; we'll reject the ones we don't want during the process" and added Marketing. My reading: no department filtering now; to be confirmed.
+- **Target size:** 150 professors (the database already has ~290 for the five IIMs, so the choice of which 150 is PENDING).
+- **Projects in emails:** about 3 per email: those matching the professor's field first, topped up from the other resume projects. Keep it short.
+- **Derivatives / time series:** the user wants a project other than Summer of Quant added. The resume has no second time-series or derivatives project. PENDING: which one to use.
+- **Resumes in the folder:** these are other students' resumes (consulting, P&G, engineering, one "External Research" resume). None lists a research internship under a professor. Used only for style. No facts from them go into any email.
+
+## Phase 0, batch 6 (2026-11-06)
+
+- **Sending account:** IIT Bombay email, 25B2704@iitb.ac.in. How the user logs in and whether SMTP/an app password works: PENDING.
+- **25 professors per IIM** (6 institutes, 150 total): approved.
+- **The database is only a reference.** Professors may also be found elsewhere, but only by Python scripts reading official faculty pages (rule 8 stays).
+- **Email check:** the user wants each email checked against the professor's own web page before use. Plan: script compares the database address with the one printed on the official page; mismatches and unconfirmed addresses go to the user. A script cannot prove a mailbox works; only the first real batch shows bounces.
+- **User asked to see the draft emails first.** Draft v3 (5 field variants) shown in `email_template_draft.md`. Awaiting feedback.
+
+## Phase 0, batch 7 (2026-11-06)
+
+- **Email wording:** no "can assist with X" lines. Instead one line: willing to contribute in whatever way the professor finds useful, open to any role. Strava teardown removed. Draft v4 in `email_template_draft.md`.
+- **Remote / on campus:** open to either; settled per professor's reply. (Email says "remotely or on campus".)
+- **Resume:** keep date of birth and gender as they are.
+- **Mail access:** IIT Bombay WEBMAIL. The user will send the webmail address. Whether IMAP/SMTP works and how to log in from a script: PENDING. The password is never typed in chat.
+- **Volume (user's choice, against my advice of 20-25/day):** about 150 emails, as many as possible, with a 1-minute gap between emails. Send slots at 08:00 and 13:00 IST: about 90 in the morning slot and the rest in the afternoon slot. Working days only. The first real batch is still small (Phase 4) and the daily cap stays adjustable.
+- **Follow-ups:** YES wanted. Days and wording PENDING.
+- **GitHub:** user has an account. No private/public repo decision yet (I recommended private). The GitHub CLI (`gh`) is NOT installed on this PC; installing it needs the user's yes.
+- **PC tools found:** git 2.52, Python 3.14.4 with requests, bs4 and openpyxl.
+
+## Phase 0, batch 8 (2026-11-06)
+
+- **Draft v5:** NO dates in the email or subject; NO remote/on-campus mention (settled after the professor replies); Quant sentence made generic ("financial and quantitative modelling projects, including portfolio allocation using regime-switching models, DCF valuation, and a venue investment IRR framework"). Closing line: "I would love to contribute in whatever way you find useful and am open to any role."
+- **Volume:** the user says the 1-minute gap is what keeps the IIT mailbox from flagging the sends. Kept as the user's plan; the daily cap stays adjustable. Ramp-up question not answered.
+- **Webmail:** https://webmail.iitb.ac.in/ (the user's link was the inbox URL; the login page is the same site). The login page lists: IMAP imap.iitb.ac.in port 993 (SSL); SMTP smtp-auth.iitb.ac.in port 587 (STARTTLS); login = normal LDAP password; no app password mentioned. To be confirmed in the Phase 3 dry run.
+- **Open risk:** no app password exists, so the sender would need the real IITB password stored as a GitHub Secret. The user decides (see STATE.md).
+
+## Phase 0, batch 9 (2026-11-06)
+
+- **Draft v5 wording fix:** "contribute" appeared twice. Now: "I am especially interested in {research area}. {PROJECT SENTENCE} I would love to contribute to your research in any role you find useful." (the contribute line comes last).
+- **Password:** the user wants emails to go out even when the laptop is off, so the IITB password will be stored as a GitHub Secret on a PRIVATE repo (typed by the user on GitHub's website, never in chat or files). All tests run on GitHub, so the password never sits on the laptop.
+- **Follow-up text:** to be decided later (timing still open; recommended 7 days, one follow-up).
+- **GitHub CLI:** the user said yes to installing. Installed with winget (GitHub.cli 2.103.3, official GitHub release, hash verified). Login not done yet.
+
+## Phase 0, batch 10 (2026-11-06): senior's style
+
+- The user shared a senior's prompt and a screenshot of a finished email (sent to a professor at IIM B) as the STYLE to follow. Ignore the senior's own facts. Structure of the screenshot email: subject "Interest in Research on {area}"; "Dear Professor {Surname},"; paragraph 1 (who I am, interest in their research, their area); paragraph 2 (my matching projects); one line of eagerness; one line willing to learn / grateful to contribute under their guidance; "My resume is attached for your review. Thank you for your time and consideration."; "Sincerely," and a signature block with degree, institute, email.
+- The senior's prompt asks for deep personalisation (opening line must reference the professor's research or a specific paper; 120-180 words; research summary + alignment + email per professor; use all 3 of the user's resumes).
+- CONFLICTS with the user's earlier rules (5 and 8: no invented claims about a professor; no AI lookups of professors). Questions asked in the chat (how personal, which "three resumes", which PDF to attach, length, summaries).
+- The user said to ask all doubts now. Answers PENDING.
+- Draft v5 is superseded once the style questions are answered.
+
+## Phase 0, batch 11 (2026-11-06): answers to the style questions
+
+- **Personalisation = Option A:** opening line written from the professor's own page text saved by the script; paper named only by printed title; no claims about findings.
+- **Resumes:** the user has ONE resume (`resume.pdf`). Only it is used and attached to every email.
+- **Length:** about 150 words, like the screenshot.
+- **Tone:** no flattery or clichés.
+- **Research summary + alignment note per professor:** yes, saved as readable files in `profiles/`.
+- **New template:** `email_template_v6.md` (replaces v5).
+- **Ramp-up:** SLOW. The user's reason: the list is not big, and a wrong mass mailing could cost them their chances.
+- **Order:** round 1 = IIM Ahmedabad, Bangalore, Calcutta, Lucknow (25 each). Kozhikode and Mumbai come later (25 each). Total plan still 150.
+- **Volume per day:** to be decided after the first small batch (Phase 4). Send slots stay 08:00 and 13:00 IST, 1 minute apart.
+- **Still PENDING:** GitHub two-step login (user action), follow-up timing (recommended 7 days), approval to leave Phase 0.
+
+## Phase 0 closed; Phase 1 started (2026-11-06)
+
+- **GitHub two-step login:** done by the user.
+- **First real batch:** "15 emails to IIM A, B, C and Lucknow". Unclear whether 15 in total or 15 per IIM. Asked in chat. Mumbai later.
+- **Follow-up:** 5 working days after the first email (wording to be decided later).
+- **Phase 1 findings (scripts in `scripts/`, cache in `cache/`):**
+  - IIM Ahmedabad: directory https://www.iima.ac.in/faculty-research/faculty-directory (200 OK); profiles at /faculty-research/faculty-directory/<Name>, reachable from the academic-area pages.
+  - IIM Calcutta: directory https://www.iimcal.ac.in/faculty/faculty-directory (200 OK); profiles at /users/<id>; "Research Interests" printed on the profile.
+  - IIM Lucknow: directory https://www.iiml.ac.in/faculty-profile (200 OK); profiles at faculty-data?n=<code>; email printed as name[at]iiml[dot]ac[dot]in.
+  - IIM Bangalore: the site answers plain scripts with 403 Forbidden. NOT worked around. Options put to the user.
+
+### Coursework (from the user's transcript screenshots, shared for context only)
+These are reference only. Which items appear in the email is still to be decided.
+
+**2025-26 Autumn (graded):** BB 101 Biology (AB), CH 111 Chemistry (AA), CH 117 Chemistry Lab (AA), MA 105 Calculus (BC), MS 101 Makerspace (AB), GC 101 Gender in the workplace (PP), NOCS01 NCC/NSS/NSO (PP).
+
+**2025-26 Spring (graded):** CH 110 Interpretative Spectroscopy (AA), CS 101 Computer Programming and Utilization (AB), ENT101 Introduction to Innovation & Entrepreneurship (AB), PH 110 Introduction to Classical and Quantum Physics (AB), PH 117 Physics Lab (AA), SOM101 Introduction to Management (AA), NOCS02 NCC/NSS/NSO (PP), TA 101 TASET (PP).
+
+**Current semester (grades not yet allotted):** DS 203 Programming for Data Science (Minor), EC 101 Economics (Department elective), EE 325 Probability and Random Processes (Additional Learning), IE 207 Industrial Systems (STEM Elective), IE 209 Linear Optimization and Network Flows (Additional Learning), MG 403 Accounting and Finance (HASMED Elective), LE 301 Seminar (Core), ES 250 / HS 250 Environmental Studies (Core).
