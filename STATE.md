@@ -40,8 +40,10 @@ The full original brief, with all working rules, is in the first message of the 
 
 - 2026-11-19: IIM Mumbai scraped (user said yes): 51 professors, 51 official @iimmumbai.ac.in emails, 41 with research areas -> data/iim_mumbai.csv. Appended to the xlsx sheet 'IIMs  ISB' rows 374-424 with new columns Research Areas / Source Page / Designation / Added (backup in data/). IIM Bangalore: 3 Haiku agents all got 403, 0 rows.
 
+- 2026-11-19: IIM Bangalore read in the user's Chrome: 109 professors, 108 official emails. xlsx now: IIM B 124 rows (35 confirmed, 2 + 15 flagged CHECK, 72 new). Details in DECISIONS.md.
+
 ## Next
-- (newest) User picks the IIMB option: real browser read / use the 52 unverified xlsx rows / skip.
+- (newest) Choose the 150 (25 per IIM) from the database; answer '15 emails' (total vs per IIM); then build the IIM sender + workflow.
 - (newest, 2026-11-19) Build the IIM sender + scheduled workflow in this repo (adapt `startups/scripts/send.py`, IITB SMTP) after the scraper output is approved.
 - (newest, Phase 1) User confirms directory links, decides what to do about IIM Bangalore, and says whether "15 emails" is the total or per IIM. Then: write the scraper, show output for 10 professors from one IIM, wait for approval.
 - (newest) User: switch on GitHub two-step login; give follow-up timing; approve moving from Phase 0 to Phase 1 (IIM faculty page scripts). Phase 1 starts by confirming the official directory links with the user.
