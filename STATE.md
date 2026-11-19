@@ -38,7 +38,10 @@ The full original brief, with all working rules, is in the first message of the 
 
 - 2026-11-19: User: target only the IIMs for now; startups get their own repo later (user will say when). GitHub repo `startup-mailer` renamed to **https://github.com/arnavjain16/iims-mailer** (private). This folder (`cold-mailer/`) is now its git repo; startup files removed from it (`startups/` folder is git-ignored, unlinked from any remote, history kept locally). Repo already has secret `IITB_PASSWORD` (added by the user) and variables `IITB_USERNAME=25B2704`, `SENDING_ENABLED=false`. Sending from 25b2704@iitb.ac.in only. No workflow in the repo yet, so nothing can send. The professor xlsx is git-ignored (not a data source).
 
+- 2026-11-19: IIM Mumbai scraped (user said yes): 51 professors, 51 official @iimmumbai.ac.in emails, 41 with research areas -> data/iim_mumbai.csv. Appended to the xlsx sheet 'IIMs  ISB' rows 374-424 with new columns Research Areas / Source Page / Designation / Added (backup in data/). IIM Bangalore: 3 Haiku agents all got 403, 0 rows.
+
 ## Next
+- (newest) User picks the IIMB option: real browser read / use the 52 unverified xlsx rows / skip.
 - (newest, 2026-11-19) Build the IIM sender + scheduled workflow in this repo (adapt `startups/scripts/send.py`, IITB SMTP) after the scraper output is approved.
 - (newest, Phase 1) User confirms directory links, decides what to do about IIM Bangalore, and says whether "15 emails" is the total or per IIM. Then: write the scraper, show output for 10 professors from one IIM, wait for approval.
 - (newest) User: switch on GitHub two-step login; give follow-up timing; approve moving from Phase 0 to Phase 1 (IIM faculty page scripts). Phase 1 starts by confirming the official directory links with the user.
