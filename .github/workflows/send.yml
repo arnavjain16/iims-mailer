@@ -1,0 +1,94 @@
+name: Send startup emails
+
+# Runs at 08:00 and 13:00 IST, Monday to Friday (GitHub may start a few minutes late).
+on:
+  schedule:
+    - cron: "30 2 * * 1-5"   # 08:00 IST
+    - cron: "30 7 * * 1-5"   # 13:00 IST
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "test = one sample to test_to | dry-run = show, send nothing | send = real batch"
+        type: choice
+        options: [test, dry-run, send]
+        default: test
+      test_to:
+        description: "Address for the test email"
+        default: "arnavj3061@gmail.com"
+      limit:
+        description: "Max first emails for a manual 'send' run"
+        default: "5"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mailer
+  cancel-in-progress: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    env:
+      GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+      # Kill switch: scheduled sending happens ONLY when the repo variable SENDING_ENABLED is "true".
+      SENDING_ENABLED: ${{ vars.SENDING_ENABLED }}
+      SLOT_LIMIT: ${{ vars.SLOT_LIMIT || '5' }}
+      FOLLOWUP_DAYS: ${{ vars.FOLLOWUP_DAYS || '5' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check the password secret exists
+        run: |
+          if [ -z "$GMAIL_APP_PASSWORD" ] && [ "${{ inputs.mode }}" != "dry-run" ]; then
+            echo "GMAIL_APP_PASSWORD secret is missing. Add it under Settings > Secrets and variables > Actions."; exit 1
+          fi
+
+      - name: Manual - test email to yourself
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'test'
+        run: python scripts/send.py --test-to "${{ inputs.test_to }}"
+
+      - name: Manual - dry run
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'dry-run'
+        run: |
+          python scripts/send.py --dry-run --limit "${{ inputs.limit }}"
+          python scripts/send.py --dry-run --followups --days "$FOLLOWUP_DAYS" --limit 50
+
+      - name: Decide whether this run sends
+        id: gate
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$SENDING_ENABLED" = "true" ]; then
+            echo "go=true" >> "$GITHUB_OUTPUT"; echo "limit=$SLOT_LIMIT" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.mode }}" = "send" ]; then
+            echo "go=true" >> "$GITHUB_OUTPUT"; echo "limit=${{ inputs.limit }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "go=false" >> "$GITHUB_OUTPUT"; echo "Not sending (SENDING_ENABLED is '$SENDING_ENABLED')."
+          fi
+
+      - name: Check replies and bounces
+        if: steps.gate.outputs.go == 'true'
+        run: python scripts/check_replies.py
+
+      - name: Follow-ups (one per company, same thread)
+        if: steps.gate.outputs.go == 'true'
+        run: python scripts/send.py --followups --days "$FOLLOWUP_DAYS" --limit "${{ steps.gate.outputs.limit }}"
+
+      - name: First emails
+        if: steps.gate.outputs.go == 'true'
+        run: python scripts/send.py --limit "${{ steps.gate.outputs.limit }}"
+
+      - name: Save the database back to the repo
+        if: always() && steps.gate.outputs.go == 'true'
+        run: |
+          python scripts/manage.py status > status.txt
+          python scripts/manage.py log
+          git config user.name "mailer-bot"
+          git config user.email "mailer-bot@users.noreply.github.com"
+          git add startups.db status.txt sent_log.csv
+          git diff --cached --quiet || git commit -m "Send run $(date -u +'%Y-%m-%d %H:%M') UTC"
+          git pull --rebase -X theirs || true
+          git push

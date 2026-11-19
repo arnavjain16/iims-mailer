@@ -1,0 +1,5 @@
+*.db binary
+*.xlsx binary
+*.pdf binary
+*.yml text eol=lf
+*.py text eol=lf

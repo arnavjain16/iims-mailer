@@ -1,0 +1,5 @@
+cache/
+scan_log.txt
+__pycache__/
+*.pyc
+~$*
