@@ -67,7 +67,7 @@ Sincerely,
 Arnav Jain
 B.S., Centre for Multidisciplinary Education, Minor in Artificial Intelligence and Data Science
 Indian Institute of Technology Bombay
-M: +91 8169991371 | arnavj3061@gmail.com
+M: +91 8169991371 | 25B2704@iitb.ac.in
 """
 
 FOLLOWUP = """Dear {company} team,

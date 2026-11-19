@@ -1,6 +1,6 @@
 # Startup cold mailer (private)
 
-Emails startups (Mumbai first) from **arnavj3061@gmail.com** about winter internships in founder's office, strategy, finance, product and VC analyst roles, with `resume.pdf` attached. GitHub Actions does the sending at **08:00 and 13:00 IST, Monday to Friday**, so the laptop can stay off.
+Emails startups (Mumbai first) from **25b2704@iitb.ac.in** (IITB mail, never Gmail) about winter internships in founder's office, strategy, finance, product and VC analyst roles, with `resume.pdf` attached. GitHub Actions does the sending at **08:00 and 13:00 IST, Monday to Friday**, so the laptop can stay off.
 
 Read first: `STATE.md` (where things stand) and `DECISIONS.md` (rules and answers).
 
@@ -15,14 +15,15 @@ Read first: `STATE.md` (where things stand) and `DECISIONS.md` (rules and answer
 - Only companies with status `approved` are emailed, and each one only once.
 - Scheduled runs send ONLY when the repo variable `SENDING_ENABLED` is `true`. Set it to `false` to stop everything at once.
 - `SLOT_LIMIT` (repo variable, default 5) caps each slot. `FOLLOWUP_DAYS` (default 5) is in working days.
-- Before every run the inbox is checked. Companies that replied or bounced never get a follow-up.
-- The Gmail App Password exists only as the GitHub Secret `GMAIL_APP_PASSWORD`.
+- Replies are NOT read automatically. Mark them with `manage.py replied`. Follow-ups go out only when the repo variable `FOLLOWUPS_ENABLED` is `true`.
+- Every first email is BCC'd to 25b2704@iitb.ac.in, so your inbox shows exactly what went out (and any bounces).
+- The IITB password exists only as the GitHub Secret `IITB_PASSWORD`. A wrong password stops the run at once (no retries, so the account is not locked).
 
 ## One-time setup (you)
-1. Google Account > Security > turn on **2-Step Verification**.
-2. Google Account > Security > **App passwords**: create one named "startup-mailer" and copy the 16 letters.
-3. GitHub repo > Settings > Secrets and variables > Actions > **New repository secret**: name `GMAIL_APP_PASSWORD`, value = the 16 letters.
-4. GitHub repo > Actions > "Send startup emails" > **Run workflow**, mode `test`: one sample arrives in your inbox.
+1. GitHub repo > Settings > Secrets and variables > Actions > **Secrets** > New repository secret: name `IITB_PASSWORD`, value = your IITB (LDAP) password.
+2. Same page > **Variables** > New repository variable: name `IITB_USERNAME`, value = the login name you type in IITB webmail.
+3. Enable the workflow: `gh workflow enable "Send startup emails"`.
+4. GitHub repo > Actions > "Send startup emails" > **Run workflow**, mode `test`: one sample arrives in your IITB inbox.
 
 ## Day-to-day (on the laptop)
 ```

@@ -14,7 +14,7 @@ on:
         default: test
       test_to:
         description: "Address for the test email"
-        default: "arnavj3061@gmail.com"
+        default: "25b2704@iitb.ac.in"
       limit:
         description: "Max first emails for a manual 'send' run"
         default: "5"
@@ -31,7 +31,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 150
     env:
-      GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+      IITB_PASSWORD: ${{ secrets.IITB_PASSWORD }}
+      IITB_USERNAME: ${{ vars.IITB_USERNAME }}
+      # Follow-ups go out only when this variable is "true" (replies are not read automatically; see README).
+      FOLLOWUPS_ENABLED: ${{ vars.FOLLOWUPS_ENABLED }}
       # Kill switch: scheduled sending happens ONLY when the repo variable SENDING_ENABLED is "true".
       SENDING_ENABLED: ${{ vars.SENDING_ENABLED }}
       SLOT_LIMIT: ${{ vars.SLOT_LIMIT || '5' }}
@@ -44,8 +47,9 @@ jobs:
 
       - name: Check the password secret exists
         run: |
-          if [ -z "$GMAIL_APP_PASSWORD" ] && [ "${{ inputs.mode }}" != "dry-run" ]; then
-            echo "GMAIL_APP_PASSWORD secret is missing. Add it under Settings > Secrets and variables > Actions."; exit 1
+          if [ "${{ inputs.mode }}" != "dry-run" ]; then
+            if [ -z "$IITB_PASSWORD" ]; then echo "IITB_PASSWORD secret is missing. Add it under Settings > Secrets and variables > Actions."; exit 1; fi
+            if [ -z "$IITB_USERNAME" ]; then echo "IITB_USERNAME variable is missing. Add it under Settings > Secrets and variables > Actions > Variables."; exit 1; fi
           fi
 
       - name: Manual - test email to yourself
@@ -69,12 +73,8 @@ jobs:
             echo "go=false" >> "$GITHUB_OUTPUT"; echo "Not sending (SENDING_ENABLED is '$SENDING_ENABLED')."
           fi
 
-      - name: Check replies and bounces
-        if: steps.gate.outputs.go == 'true'
-        run: python scripts/check_replies.py
-
       - name: Follow-ups (one per company, same thread)
-        if: steps.gate.outputs.go == 'true'
+        if: steps.gate.outputs.go == 'true' && env.FOLLOWUPS_ENABLED == 'true'
         run: python scripts/send.py --followups --days "$FOLLOWUP_DAYS" --limit "${{ steps.gate.outputs.limit }}"
 
       - name: First emails

@@ -1,18 +1,21 @@
 """
-Sends the startup internship emails from Arnav's Gmail (arnavj3061@gmail.com).
+Sends the startup internship emails from Arnav's IIT Bombay mailbox (25b2704@iitb.ac.in).
 
 Safety:
   * Only companies whose status is 'approved' get an email (see manage.py).
   * A company is never emailed twice (its status becomes 'sent').
-  * The Gmail APP PASSWORD comes from the GMAIL_APP_PASSWORD environment variable
+  * The IITB password comes from the IITB_PASSWORD environment variable
     (a GitHub Secret when run on GitHub), or from a hidden prompt on the laptop.
-    It is never written to any file.
+    It is never written to any file. The login name comes from IITB_USERNAME
+    (a plain GitHub variable, not a secret).
   * --dry-run prints what would be sent and sends nothing.
   * Stops at a login error, or after 2 send errors in a row.
-  * Gmail keeps a copy of every email in your Sent folder automatically.
+  * IITB mail does not keep a Sent copy for us, so every first email is also BCC'd to
+    25b2704@iitb.ac.in: you see exactly what went out (and any bounce notices) in your inbox.
+  * A failed login stops everything at once (repeated wrong logins could lock the account).
 
 Examples (run from the repo folder):
-  python scripts/send.py --test-to arnavj3061@gmail.com   one sample to yourself
+  python scripts/send.py --test-to 25b2704@iitb.ac.in     one sample to yourself
   python scripts/send.py --dry-run --limit 5
   python scripts/send.py --limit 10                       next 10 approved, ~60 s apart
   python scripts/send.py --followups --days 5             follow-ups after 5 working days, no reply
@@ -37,8 +40,9 @@ from template import FOLLOWUP, render  # noqa: E402
 
 DB_PATH = ROOT / "startups.db"
 RESUME = ROOT / "resume.pdf"
-SMTP_HOST, SMTP_PORT = "smtp.gmail.com", 465
-FROM_NAME, FROM_ADDR = "Arnav Jain", "arnavj3061@gmail.com"
+SMTP_HOST, SMTP_PORT = "smtp-auth.iitb.ac.in", 587      # STARTTLS, as listed on the IITB webmail login page
+FROM_NAME, FROM_ADDR = "Arnav Jain", "25b2704@iitb.ac.in"
+BCC_ADDR = FROM_ADDR                                      # your own copy of every real email
 IST = timezone(timedelta(hours=5, minutes=30))
 
 
@@ -56,13 +60,15 @@ def working_days_since(stamp):
     return n
 
 
-def build(to, subject, body, in_reply_to=None):
+def build(to, subject, body, in_reply_to=None, bcc=None):
     m = EmailMessage()
     m["From"] = f"{FROM_NAME} <{FROM_ADDR}>"
     m["To"] = to
     m["Subject"] = subject
     m["Date"] = formatdate(localtime=True)
-    m["Message-ID"] = make_msgid(domain="gmail.com")
+    m["Message-ID"] = make_msgid(domain="iitb.ac.in")
+    if bcc:
+        m["Bcc"] = bcc          # delivered to you, never shown to the company
     if in_reply_to:
         m["In-Reply-To"] = in_reply_to
         m["References"] = in_reply_to
@@ -72,9 +78,12 @@ def build(to, subject, body, in_reply_to=None):
     return m
 
 
-def connect(password):
-    s = smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT, context=ssl.create_default_context(), timeout=60)
-    s.login(FROM_ADDR, password)
+def connect(username, password):
+    s = smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=60)
+    s.ehlo()
+    s.starttls(context=ssl.create_default_context())
+    s.ehlo()
+    s.login(username, password)
     return s
 
 
@@ -126,21 +135,22 @@ def main():
         print("\n----- first email -----\nTo: %s\nSubject: %s\n\n%s" % (plan[0][1], plan[0][2], plan[0][3]))
         return
 
-    password = os.environ.get("GMAIL_APP_PASSWORD") or getpass.getpass(f"Gmail app password for {FROM_ADDR} (hidden): ")
-    password = password.replace(" ", "")
+    username = os.environ.get("IITB_USERNAME") or input("IITB login name (the one you type in webmail): ").strip()
+    password = os.environ.get("IITB_PASSWORD") or getpass.getpass("IITB password (hidden): ")
     try:
-        smtp = connect(password)
+        smtp = connect(username, password)
     except smtplib.SMTPAuthenticationError as exc:
-        sys.exit(f"Gmail login failed, nothing sent: {exc}")
+        sys.exit(f"IITB login failed, nothing sent (not retrying, to avoid locking the account): {exc}")
 
     fails = 0
     for i, (r, to, subject, body) in enumerate(plan):
-        msg = build(to, subject, body, in_reply_to=r["message_id"] if args.followups else None)
+        msg = build(to, subject, body, in_reply_to=r["message_id"] if args.followups else None,
+                    bcc=None if args.test_to else BCC_ADDR)
         try:
             try:
                 smtp.send_message(msg)
             except smtplib.SMTPServerDisconnected:
-                smtp = connect(password)
+                smtp = connect(username, password)
                 smtp.send_message(msg)
         except Exception as exc:
             fails += 1

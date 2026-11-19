@@ -19,7 +19,7 @@ Sincerely,
 Arnav Jain
 B.S., Centre for Multidisciplinary Education, Minor in Artificial Intelligence and Data Science
 Indian Institute of Technology Bombay
-M: +91 8169991371 | arnavj3061@gmail.com
+M: +91 8169991371 | 25B2704@iitb.ac.in
 ```
 
 ## Track: finance (example: 1 Finance -> careers@1finance.co.in)
@@ -41,7 +41,7 @@ Sincerely,
 Arnav Jain
 B.S., Centre for Multidisciplinary Education, Minor in Artificial Intelligence and Data Science
 Indian Institute of Technology Bombay
-M: +91 8169991371 | arnavj3061@gmail.com
+M: +91 8169991371 | 25B2704@iitb.ac.in
 ```
 
 ## Track: fintech (example: CoinDCX -> hr@coindcx.com)
@@ -63,7 +63,7 @@ Sincerely,
 Arnav Jain
 B.S., Centre for Multidisciplinary Education, Minor in Artificial Intelligence and Data Science
 Indian Institute of Technology Bombay
-M: +91 8169991371 | arnavj3061@gmail.com
+M: +91 8169991371 | 25B2704@iitb.ac.in
 ```
 
 ## Track: tech (example: BrowserStack -> careers@browserstack.com)
@@ -85,7 +85,7 @@ Sincerely,
 Arnav Jain
 B.S., Centre for Multidisciplinary Education, Minor in Artificial Intelligence and Data Science
 Indian Institute of Technology Bombay
-M: +91 8169991371 | arnavj3061@gmail.com
+M: +91 8169991371 | 25B2704@iitb.ac.in
 ```
 
 ## Track: vc (example: A91 Partners -> info@a91partners.com)
@@ -107,5 +107,5 @@ Sincerely,
 Arnav Jain
 B.S., Centre for Multidisciplinary Education, Minor in Artificial Intelligence and Data Science
 Indian Institute of Technology Bombay
-M: +91 8169991371 | arnavj3061@gmail.com
+M: +91 8169991371 | 25B2704@iitb.ac.in
 ```
