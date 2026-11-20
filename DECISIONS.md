@@ -156,3 +156,11 @@ These are reference only. Which items appear in the email is still to be decided
 - Saved to `data/iimb_browser_read.tsv`; links + emails verified against a fingerprint computed in the browser (109 rows, exact match). The research column holds a short excerpt of each profile's Summary (blank when none).
 - Merge into the xlsx (backup in data/): 35 existing IIM B rows confirmed (same email) and given research/source/designation; 2 rows flagged CHECK (Dinesh Kumar, Pulak Ghosh: sheet email not on profile); 15 old rows flagged "not listed on IIMB area faculty pages (may have left)"; 72 new rows appended (rows 425-496). Nothing deleted or overwritten.
 - Includes visiting faculty (3 Management Communication, Saras Sarasvathy) and professors of practice, marked in Designation/Added.
+
+## 2026-11-20: IIM A / C / Lucknow verified against official sites; senior's list merged
+- Official lists read by plain script (`scripts/scrape_official.py`): IIMA 109 (all with email), IIMC 82 (all), IIML 96 (all; some written as x[dot]y[at]iiml[dot]ac[dot]in). IIML dropped connections once; fetch delay raised to 5 s and errors are no longer cached.
+- `scripts/verify_merge.py --write` (backup in data/): 108 confirmed, 25 emails CORRECTED to the official address (old one kept in col H; mostly IIM Lucknow, incl. the three wrong "ashish@iiml"), 3 FILLED (M P Ram Mohan, Prahalad Venkateshan, Akshaya Vijayalakshmi), 37 flagged "not on the official list (may have left)". Nothing deleted.
+- Area-chair addresses (chr-...@iima.ac.in) are not used to overwrite a personal email (Viswanath Pingali kept). Rajesh Chandwani (new) only has chr-hrm@ on the official page: flagged CHECK.
+- Senior's CSV (Downloads, "Database (Confide) - IIM_ISB"): 44 IIMA/IIMC professors confirmed on official pages and added (rows 497-540); 32 not on official lists skipped; its IIMB part was already superseded by the browser read. Its xlsx copy is identical to the original. ISB ignored (IIMs only).
+- Blank-institute IIM Lucknow rows now say "IIM L".
+- Not added: official faculty in neither list (IIMA 40, IIMC 13, IIML 54). IIM Kozhikode (63 rows) still unverified.

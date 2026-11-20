@@ -25,7 +25,7 @@ CACHE.mkdir(exist_ok=True)
 
 # A clear, honest name for this reader. No personal contact details are sent.
 USER_AGENT = "IITB-student-faculty-page-reader/0.1 (reads public faculty pages, a few at a time)"
-DELAY_SECONDS = 2.0           # pause between real (non-cached) downloads
+DELAY_SECONDS = 5.0           # pause between real (non-cached) downloads
 _last_request_time = 0.0
 _robots = {}                  # one robots.txt parser per website
 
@@ -79,8 +79,9 @@ def fetch(url):
 
     meta = {"url": url, "final_url": final_url, "status": status,
             "blocked_by_robots": False, "fetched_at": time.strftime("%Y-%m-%d %H:%M:%S")}
-    body_file.write_text(text, encoding="utf-8")
-    meta_file.write_text(json.dumps(meta, indent=1), encoding="utf-8")
+    if status is not None and status < 500:          # never cache network errors / server errors
+        body_file.write_text(text, encoding="utf-8")
+        meta_file.write_text(json.dumps(meta, indent=1), encoding="utf-8")
     meta["text"] = text
     meta["from_cache"] = False
     return meta

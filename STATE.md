@@ -42,6 +42,8 @@ The full original brief, with all working rules, is in the first message of the 
 
 - 2026-11-19: IIM Bangalore read in the user's Chrome: 109 professors, 108 official emails. xlsx now: IIM B 124 rows (35 confirmed, 2 + 15 flagged CHECK, 72 new). Details in DECISIONS.md.
 
+- 2026-11-20: IIM A/C/L verified against official sites and senior's list merged (DECISIONS.md). Database: 455 IIM rows, 337 verified, 55 flagged CHECK, 63 unverified (all IIM K).
+
 ## Next
 - (newest) Choose the 150 (25 per IIM) from the database; answer '15 emails' (total vs per IIM); then build the IIM sender + workflow.
 - (newest, 2026-11-19) Build the IIM sender + scheduled workflow in this repo (adapt `startups/scripts/send.py`, IITB SMTP) after the scraper output is approved.
