@@ -24,9 +24,12 @@ My resume is attached for your review. Thank you for your time and consideration
 
 Sincerely,
 Arnav Jain
+
+--
+Arnav Jain
 B.S., Centre for Multidisciplinary Education, Minor in Artificial Intelligence and Data Science
 Indian Institute of Technology Bombay
-M: +91 8169991371 | 25B2704@iitb.ac.in
+25b2704@iitb.ac.in
 
 ---
 

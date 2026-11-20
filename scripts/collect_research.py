@@ -19,7 +19,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from bs4 import BeautifulSoup  # noqa: E402
 from common import PROJECT, fetch  # noqa: E402
 
-SRC = {"iima": "iim_ahmedabad.csv", "iimc": "iim_calcutta.csv", "iiml": "iim_lucknow.csv"}
+SRC = {"iima": "iim_ahmedabad.csv", "iimc": "iim_calcutta.csv", "iiml": "iim_lucknow.csv", "iimk": "iim_kozhikode.csv"}
 STOP = r"(Books?/Book Chapters|Publications|Journal Articles|Teaching|Education|Awards|Conference|Working Papers|Courses|Selected)"
 
 
@@ -60,7 +60,7 @@ def iimc(soup):
 
 
 def main():
-    readers = {"iima": iima, "iiml": iiml, "iimc": iimc}
+    readers = {"iima": iima, "iiml": iiml, "iimc": iimc, "iimk": iimc}   # IIMK profiles are free text like IIMC
     for key in sys.argv[1:] or readers:
         rows = list(csv.DictReader((PROJECT / "data" / SRC[key]).open(encoding="utf-8-sig")))
         out = []

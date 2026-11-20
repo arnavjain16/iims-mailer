@@ -46,7 +46,10 @@ The full original brief, with all working rules, is in the first message of the 
 
 - 2026-11-20: Opening-line style approved. Official research text saved (data/research_*.csv). Ranking by fit -> data/shortlist.csv. IIM sender (scripts/send.py, reads data/batch.csv) + workflow .github/workflows/send.yml pushed; SENDING_ENABLED=false; nothing sent.
 
+- 2026-11-20: Signature changed (no phone; '--' block). IIMK verified. Batch 1 (90 drafts, 15 x A/B/C/K/L/Mumbai) in data/batch.csv + batch_review.md. Nothing sent.
+
 ## Next
+- (newest) User reviews batch_review.md (3 address forms to check); then mark rows approved; manual 'test' run to self; first real slot with a small SLOT_LIMIT.
 - (newest) User picks first batch size; Claude writes opening lines for it into data/batch.csv (status draft); user reviews and approves; manual 'test' run to self; then first real batch.
 - (newest) Choose the 150 (25 per IIM) from the database; answer '15 emails' (total vs per IIM); then build the IIM sender + workflow.
 - (newest, 2026-11-19) Build the IIM sender + scheduled workflow in this repo (adapt `startups/scripts/send.py`, IITB SMTP) after the scraper output is approved.

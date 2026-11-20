@@ -53,26 +53,30 @@ def read(path):
 
 
 def main():
+    dnc = {r["profile_url"] for r in read(D / "do_not_contact.csv")}
     people = []
     for inst_file, research_file, inst in [("iim_ahmedabad.csv", "research_iima.csv", "IIM A"),
                                            ("iim_calcutta.csv", "research_iimc.csv", "IIM C"),
                                            ("iim_lucknow.csv", "research_iiml.csv", "IIM L"),
-                                           ("iim_bangalore.csv", None, "IIM B"),
+                                           ("iim_kozhikode.csv", "research_iimk.csv", "IIM K"),
+                                           ("iim_bangalore.csv", "research_iimb.csv", "IIM B"),
                                            ("iim_mumbai.csv", None, "IIM Mumbai")]:
         res = {r["profile_url"]: r["research_text"] for r in read(D / research_file)} if research_file else {}
         for r in read(D / inst_file):
+            if r["profile_url"] in dnc:
+                continue                                   # profile says: no internship requests
             if not r["email"] or r.get("email_note", "").startswith(("visiting", "Director")):
                 continue
             if "visiting" in r.get("designation", "").lower():
                 continue
-            research = res.get(r["profile_url"], r.get("research_interests", "")) or ""
+            research = res.get(r["profile_url"]) or r.get("research_interests", "") or ""
             s, hits = score(r["area"] + " " + research)
             people.append({"institute": inst, "name": r["name"], "email": r["email"], "area": r["area"],
                            "designation": r.get("designation", ""), "score": s, "matched": ", ".join(hits),
                            "field": field_for(r["area"] + " " + research), "research_text": research[:400],
                            "profile_url": r["profile_url"]})
     out = []
-    for inst in ("IIM A", "IIM B", "IIM C", "IIM L", "IIM Mumbai"):
+    for inst in ("IIM A", "IIM B", "IIM C", "IIM K", "IIM L", "IIM Mumbai"):
         group = sorted([p for p in people if p["institute"] == inst], key=lambda p: -p["score"])
         for i, p in enumerate(group, 1):
             p["rank"] = i

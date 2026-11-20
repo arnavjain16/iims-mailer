@@ -128,6 +128,32 @@ def iiml():
     return rows
 
 
+def iimk():
+    base = "https://iimk.ac.in/faculty-directory"
+    rows, seen, page = [], set(), 1                      # pages are numbered from 1
+    while page < 30:
+        soup = BeautifulSoup(fetch(f"{base}?page={page}")["text"], "html.parser")
+        new = 0
+        for a in soup.select("div.fac-bg > a[href]"):
+            url = urljoin(base, a["href"])
+            if url in seen:
+                continue
+            seen.add(url)
+            new += 1
+            parts = [x for x in (clean(s) for s in a.stripped_strings) if x and x != "View More"]
+            raw = next((b.get("title", "") for b in a.find_all("button") if "@" in b.get("title", "")), "")
+            mails = [m.strip().lower() for m in raw.split(",") if "@" in m]
+            personal = [m for m in mails if not re.match(r"(dean|chair|director|head|office)[-_.]", m)]
+            email = (personal or mails or [""])[0]
+            rows.append(finish(parts[0].title() if parts else "", "IIM K", parts[1] if len(parts) > 1 else "",
+                               "", email, url, "@iimk.ac.in"))
+        print(f"  IIMK directory page {page}: {new} new")
+        if new == 0:
+            break
+        page += 1
+    return rows
+
+
 def finish(name, inst, area, desig, email, url, domain):
     note = ""
     if not email:
@@ -141,7 +167,8 @@ def finish(name, inst, area, desig, email, url, domain):
 
 
 def main():
-    readers = {"iima": (iima, "iim_ahmedabad"), "iimc": (iimc, "iim_calcutta"), "iiml": (iiml, "iim_lucknow")}
+    readers = {"iima": (iima, "iim_ahmedabad"), "iimc": (iimc, "iim_calcutta"), "iiml": (iiml, "iim_lucknow"),
+               "iimk": (iimk, "iim_kozhikode")}
     for key in sys.argv[1:] or readers:
         fn, fname = readers[key]
         print(f"Reading {key}...")

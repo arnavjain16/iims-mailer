@@ -23,9 +23,9 @@ import openpyxl
 ROOT = Path(__file__).resolve().parent.parent
 XLSX = ROOT / "Profs Database __ Kartik Vuthoo.xlsx"
 SENIOR = Path("C:/Users/ARNAV JAIN/Downloads/random/random/Database (Confide) - IIM_ISB copy.csv")
-OFFICIAL = {"IIM A": "iim_ahmedabad.csv", "IIM C": "iim_calcutta.csv", "IIM L": "iim_lucknow.csv"}
+OFFICIAL = {"IIM A": "iim_ahmedabad.csv", "IIM C": "iim_calcutta.csv", "IIM L": "iim_lucknow.csv", "IIM K": "iim_kozhikode.csv"}
 SENIOR_INST = {"IIM Ahemdabad": "IIM A", "IIM Calcutta": "IIM C"}
-TODAY = "2026-11-19"
+TODAY = "2026-11-20"
 
 
 def _base(s):

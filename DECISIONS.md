@@ -168,3 +168,14 @@ These are reference only. Which items appear in the email is still to be decided
 ## 2026-11-20: opening-line style approved
 - User approved the style in `opening_lines_samples.md` ("I am deeply fascinated by your work on X and Y ..."), modelled on the user's own example. This replaces the old "no clichés" rule for the opening line.
 - Each line: only the professor's own official research text, 2-3 topics in their words, no claims about findings. Subject = "Interest in Research on {first topic}". The user reviews the full list for every batch before sending.
+
+## 2026-11-20: signature and batch size
+- Signature: phone number removed; only the email (25B2704@iitb.ac.in) at the end.
+- First batch: 15 professors per IIM for IIM A, B, C, Kozhikode, Lucknow and Mumbai (90 emails), best fit first. Kozhikode to be verified against its official site first.
+- Signature format (user's example): 'Sincerely,' / name / blank / '--' / name / degree line / institute / email (lowercase).
+
+## 2026-11-20: IIM Kozhikode verified; batch 1 drafted (90)
+- IIMK official directory (https://iimk.ac.in/faculty-directory, 9 pages): 116 faculty, 115 emails. xlsx IIMK rows verified (2 corrected incl. a gmail address, 7 flagged may-have-left).
+- No-intern notices found on official profiles -> `data/do_not_contact.csv` (8: Soudeep Deb IIMB; Arijit Sen, Chetan Joshi, Suren Sista IIMC; anjana, aghatak, ramesh, Payal Anand IIMK). Excluded from ranking and batches.
+- IIMB fuller research text for 48 candidates re-read in Chrome (data/research_iimb.csv).
+- Batch 1 = `data/batch.csv` (status draft), 15 each for IIM A, B, C, K, L, Mumbai, written by `scripts/make_batch.py`; review copy `batch_review.md`. All emails come from the official lists.
