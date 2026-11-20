@@ -164,3 +164,7 @@ These are reference only. Which items appear in the email is still to be decided
 - Senior's CSV (Downloads, "Database (Confide) - IIM_ISB"): 44 IIMA/IIMC professors confirmed on official pages and added (rows 497-540); 32 not on official lists skipped; its IIMB part was already superseded by the browser read. Its xlsx copy is identical to the original. ISB ignored (IIMs only).
 - Blank-institute IIM Lucknow rows now say "IIM L".
 - Not added: official faculty in neither list (IIMA 40, IIMC 13, IIML 54). IIM Kozhikode (63 rows) still unverified.
+
+## 2026-11-20: opening-line style approved
+- User approved the style in `opening_lines_samples.md` ("I am deeply fascinated by your work on X and Y ..."), modelled on the user's own example. This replaces the old "no clichés" rule for the opening line.
+- Each line: only the professor's own official research text, 2-3 topics in their words, no claims about findings. Subject = "Interest in Research on {first topic}". The user reviews the full list for every batch before sending.

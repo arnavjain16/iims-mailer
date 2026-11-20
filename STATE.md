@@ -44,7 +44,10 @@ The full original brief, with all working rules, is in the first message of the 
 
 - 2026-11-20: IIM A/C/L verified against official sites and senior's list merged (DECISIONS.md). Database: 455 IIM rows, 337 verified, 55 flagged CHECK, 63 unverified (all IIM K).
 
+- 2026-11-20: Opening-line style approved. Official research text saved (data/research_*.csv). Ranking by fit -> data/shortlist.csv. IIM sender (scripts/send.py, reads data/batch.csv) + workflow .github/workflows/send.yml pushed; SENDING_ENABLED=false; nothing sent.
+
 ## Next
+- (newest) User picks first batch size; Claude writes opening lines for it into data/batch.csv (status draft); user reviews and approves; manual 'test' run to self; then first real batch.
 - (newest) Choose the 150 (25 per IIM) from the database; answer '15 emails' (total vs per IIM); then build the IIM sender + workflow.
 - (newest, 2026-11-19) Build the IIM sender + scheduled workflow in this repo (adapt `startups/scripts/send.py`, IITB SMTP) after the scraper output is approved.
 - (newest, Phase 1) User confirms directory links, decides what to do about IIM Bangalore, and says whether "15 emails" is the total or per IIM. Then: write the scraper, show output for 10 professors from one IIM, wait for approval.
