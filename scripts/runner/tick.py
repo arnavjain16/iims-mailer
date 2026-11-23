@@ -9,7 +9,8 @@ Each loop:
 Near the end it starts its successor (self-chaining) while anything is scheduled,
 or for 30 days after the last real send so replies keep being picked up.
 
-Real sending only when SENDING_ENABLED=true (repo variable) - the kill switch.
+Real sending only when data/control.json says {"sending_enabled": true} - the kill switch.
+It is re-read every minute (after git pull), so flipping it takes effect within a minute.
 DRY_RUN_TO set: the first DRY_RUN_LIMIT approved rows (send_at ignored) go to that address instead,
 nothing is marked sent, nothing is committed, no Issues are opened, and the run ends.
 
@@ -32,6 +33,7 @@ from scripts.runner import state as S  # noqa: E402
 ROOT = HERE.parent.parent
 BATCH = ROOT / "data" / "batch.csv"
 STATE = ROOT / "data" / "runner_state.json"
+CONTROL = ROOT / "data" / "control.json"
 LOOP_SECONDS = 60
 RUN_SECONDS = 5 * 3600 + 40 * 60
 CHAIN_MARGIN = 3 * 60          # start the successor this long before the end
@@ -80,7 +82,7 @@ class Runner:
             log(f"sending halted: {st['halted']} (clear 'halted' in data/runner_state.json to resume)")
         elif c.dry_run_to:
             changed |= self._dry_send(rows, st, now)
-        elif c.sending_enabled:
+        elif d.store.sending_enabled():
             changed |= self._real_send(rows, st, now)
 
         # ---- replies
@@ -251,6 +253,13 @@ class Store:
     def save_state(self, st):
         S.save_state(STATE, st)
 
+    def sending_enabled(self):
+        try:
+            import json
+            return json.loads(CONTROL.read_text(encoding="utf-8")).get("sending_enabled") is True
+        except Exception:
+            return False                       # missing/broken switch file = OFF
+
     def read_both(self):
         return self.load_rows(), self.load_state()
 
@@ -280,7 +289,6 @@ def main():
     c = Cfg()
     c.dry_run_to = os.environ.get("DRY_RUN_TO", "").strip()
     c.dry_run_limit = int(os.environ.get("DRY_RUN_LIMIT", "2") or 2)
-    c.sending_enabled = os.environ.get("SENDING_ENABLED", "").strip().lower() == "true"
     c.sender_email = sender_email
     repo = os.environ.get("GITHUB_REPOSITORY", "")
 
@@ -304,7 +312,7 @@ def main():
             log(f"chain error: gh exit {r.returncode}")
     d.chain = chain
 
-    log(f"start: {'DRY RUN to test address' if c.dry_run_to else ('sending ON' if c.sending_enabled else 'sending OFF (kill switch)')}")
+    log(f"start: {'DRY RUN to test address' if c.dry_run_to else ('sending ON' if d.store.sending_enabled() else 'sending OFF (data/control.json)')}")
     Runner(d, c).run(int(args.max_minutes * 60))
 
 

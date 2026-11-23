@@ -22,7 +22,8 @@ permissions:
   actions: write
 
 concurrency:
-  group: sender
+  # test runs (dry_run_to set) get their own group so they never wait behind the long sender run
+  group: ${{ inputs.dry_run_to != '' && 'dry-run' || 'sender' }}
   cancel-in-progress: false
 
 jobs:
@@ -34,8 +35,7 @@ jobs:
       SENDER_APP_TOKEN: ${{ secrets.SENDER_APP_TOKEN }}
       SMTP_USER: ${{ secrets.SMTP_USER }}
       GH_TOKEN: ${{ github.token }}
-      # Kill switch: real emails go out ONLY when this repo variable is "true".
-      SENDING_ENABLED: ${{ vars.SENDING_ENABLED }}
+      # Kill switch: data/control.json ("sending_enabled": true/false), re-read every minute.
       DRY_RUN_TO: ${{ inputs.dry_run_to }}
       DRY_RUN_LIMIT: ${{ inputs.dry_run_limit }}
     steps:
@@ -58,9 +58,10 @@ jobs:
             if [ -z "${!v}" ]; then echo "Secret $v is missing."; exit 1; fi
           done
       - name: Run the sender loop
+        id: loop
         run: python scripts/runner/tick.py
       - name: Restart after a crash
-        if: failure() && inputs.dry_run_to == ''
+        if: failure() && steps.loop.outcome == 'failure' && inputs.dry_run_to == ''
         run: |
           sleep 120
           gh workflow run tick.yml --ref main -R "$GITHUB_REPOSITORY"

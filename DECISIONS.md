@@ -188,3 +188,9 @@ These are reference only. Which items appear in the email is still to be decided
 - 2026-11-24: Intro sentence changed to the user's wording: "I am an undergraduate at IIT Bombay, currently pursuing a Minor in AI & Data Science, and I am writing to express my interest in your research." (no name, no CPI in the first line).
 - 2026-11-24: Signature no longer repeats the Minor. Extra paragraph "I am eager to apply my data science skills to your quantitative research." added after the project paragraph for 47 professors with quantitative research (column quant_line in data/batch.csv).
 - 2026-11-24: User approved all 90 ("approve all 90"); status set to approved.
+
+## 2026-11-24: new sender (tick.yml) replaces send.yml
+- User chose option B: the new runner sends batch 1 today. Old send.yml deleted (and its workflow disabled); the 9:30 desktop task was disabled.
+- Repo made PUBLIC at the user's request ("I don't care who sees this repo") so Actions minutes are unlimited. Credentials stay in GitHub Secrets: SENDER_EMAIL, SENDER_APP_TOKEN (SSO access token), SMTP_USER.
+- All 90 approved rows: send_at = 2026-11-24 09:30 IST. Hard rule: >= 60 s between any two emails (09:30 -> ~11:00).
+- Kill switch: data/control.json "sending_enabled" (re-read every minute). Starts false; set true only after the user OKs the dry run.

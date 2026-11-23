@@ -50,8 +50,11 @@ class FakeClock:
 
 
 class FakeStore:
-    def __init__(self, rows, st=None):
-        self.rows, self.st = rows, st or S.default_state()
+    def __init__(self, rows, st=None, enabled=True):
+        self.rows, self.st, self.enabled = rows, st or S.default_state(), enabled
+
+    def sending_enabled(self):
+        return self.enabled
 
     def load_rows(self):
         return [dict(r) for r in self.rows]
@@ -129,7 +132,7 @@ class FakeGit:
 def make(rows, start, sending=True, dry=None, mail_fail=None, replies=None, issues_ok=True, st=None):
     clock = FakeClock(start)
     d = T.Deps()
-    d.clock, d.store, d.errors = clock, FakeStore(rows, st), A
+    d.clock, d.store, d.errors = clock, FakeStore(rows, st, enabled=sending), A
     d.mailer = FakeMailer(clock, mail_fail)
     d.replies = replies or FakeReplies()
     d.issues, d.git = FakeIssues(issues_ok), FakeGit()
@@ -139,7 +142,7 @@ def make(rows, start, sending=True, dry=None, mail_fail=None, replies=None, issu
         d.chained += 1
     d.chain = chain
     c = T.Cfg()
-    c.dry_run_to, c.dry_run_limit, c.sending_enabled, c.sender_email = dry or "", 2, sending, "me@iitb.ac.in"
+    c.dry_run_to, c.dry_run_limit, c.sender_email = dry or "", 2, "me@iitb.ac.in"
     return T.Runner(d, c), d
 
 
@@ -186,10 +189,14 @@ def test_gap_counts_previous_sends_from_another_run():
     assert len(d.mailer.sent) == 1
 
 
-def test_kill_switch_off_sends_nothing():
+def test_kill_switch_off_sends_nothing_and_is_read_live():
     r, d = make([row("a@x")], at("10:00"), sending=False)
     r.iteration()
     assert d.mailer.sent == []
+    d.store.enabled = True                # flipped while the run is going
+    d.clock.sleep(60)
+    r.iteration()
+    assert len(d.mailer.sent) == 1
 
 
 def test_smtp_rejection_marks_failed_halts_and_opens_issue():
