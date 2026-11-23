@@ -194,3 +194,4 @@ These are reference only. Which items appear in the email is still to be decided
 - Repo made PUBLIC at the user's request ("I don't care who sees this repo") so Actions minutes are unlimited. Credentials stay in GitHub Secrets: SENDER_EMAIL, SENDER_APP_TOKEN (SSO access token), SMTP_USER.
 - All 90 approved rows: send_at = 2026-11-24 09:30 IST. Hard rule: >= 60 s between any two emails (09:30 -> ~11:00).
 - Kill switch: data/control.json "sending_enabled" (re-read every minute). Starts false; set true only after the user OKs the dry run.
+- 2026-11-24 02:2x IST: user OK'd the dry run ("OK, switch on"); control.json sending_enabled=true.
