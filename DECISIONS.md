@@ -179,3 +179,8 @@ These are reference only. Which items appear in the email is still to be decided
 - No-intern notices found on official profiles -> `data/do_not_contact.csv` (8: Soudeep Deb IIMB; Arijit Sen, Chetan Joshi, Suren Sista IIMC; anjana, aghatak, ramesh, Payal Anand IIMK). Excluded from ranking and batches.
 - IIMB fuller research text for 48 candidates re-read in Chrome (data/research_iimb.csv).
 - Batch 1 = `data/batch.csv` (status draft), 15 each for IIM A, B, C, K, L, Mumbai, written by `scripts/make_batch.py`; review copy `batch_review.md`. All emails come from the official lists.
+
+## 2026-11-24: IITB mail login from programs is blocked
+- Webmail works (it now logs in via "Login with SSO"), but the same lowercase login 25b2704 + correct 11-character password is REJECTED by both smtp-auth.iitb.ac.in:587 (535 authentication failed) and imap.iitb.ac.in:993. The servers themselves are up (IMAP needs old TLS settings; scripts handle it).
+- Conclusion: since SSO became mandatory, IITB's mail servers do not accept the password from email programs for this account. Needs CC to enable it, or a separate mail-client password. No more login attempts until then (lockout risk).
+- Fallback offered: send the approved emails through webmail in the user's Chrome after the user logs in via SSO.
