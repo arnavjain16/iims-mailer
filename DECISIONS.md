@@ -197,3 +197,4 @@ These are reference only. Which items appear in the email is still to be decided
 - 2026-11-24 02:2x IST: user OK'd the dry run ("OK, switch on"); control.json sending_enabled=true.
 - 2026-11-24: Daily queueing: desktop task at 12 a.m. on weekdays runs scripts/queue_today.py: up to 90 approved, unscheduled emails get send_at TODAY 08:30 IST (sent 08:30 -> ~10:00, 1/min). Skips weekends + data/holidays.txt (IITB closed holidays 2026-27) + runs after 10:00. Afternoon slot (1:30 pm) deferred. User chose to send today's 90 at 09:30 despite today being a holiday.
 - 2026-11-24: user moved today's 90 to 08:30 (08:30 -> ~10:00).
+- 2026-11-24: Line check before sending: all lines match the professors' official research sections except Debabrata Das (IIM Mumbai), whose 'Area of Research' is empty (line had come from Teaching Interests). Rewritten from his published paper titles.
