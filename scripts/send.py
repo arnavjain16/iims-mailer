@@ -52,7 +52,7 @@ PROJECTS = {
 
 BODY = """Dear Professor {surname},
 
-I am Arnav Jain, an undergraduate at IIT Bombay (CPI 9.13) pursuing a Minor in Artificial Intelligence and Data Science, and I am writing to express my interest in your research. {opening_line}
+I am an undergraduate at IIT Bombay, currently pursuing a Minor in AI & Data Science, and I am writing to express my interest in your research. {opening_line}
 
 {projects}
 

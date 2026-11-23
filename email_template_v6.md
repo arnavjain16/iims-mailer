@@ -14,7 +14,7 @@ Rules:
 
 Dear Professor {Surname},
 
-I am Arnav Jain, an undergraduate at IIT Bombay (CPI 9.13) pursuing a Minor in Artificial Intelligence and Data Science, and I am writing to express my interest in your research. {OPENING LINE, from the professor's own page text only}
+I am an undergraduate at IIT Bombay, currently pursuing a Minor in AI & Data Science, and I am writing to express my interest in your research. {OPENING LINE, from the professor's own page text only}
 
 {PROJECT PARAGRAPH: one of the project sentences below, chosen by the professor's field}
 
