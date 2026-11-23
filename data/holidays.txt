@@ -1,0 +1,37 @@
+# Days when NO emails are queued (besides Saturdays and Sundays).
+# Source: IIT Bombay "Calendar Holidays" (closed holidays), https://www.iitb.ac.in/holidayslist (read 2026-11-24).
+# Restricted holidays are not included. Dates marked * depend on the moon; check closer to the date.
+# Format: YYYY-MM-DD  name. Add or remove lines as needed.
+2026-01-26  Republic Day
+2026-03-04  Holi
+2026-03-19  Gudi Padava
+2026-03-21  Id-ul-Fitr*
+2026-03-31  Mahavir Jayanti
+2026-04-03  Good Friday
+2026-05-01  Buddha Purnima
+2026-05-27  Id-ul-Zuha (Bakri Id)*
+2026-06-26  Muharram*
+2026-08-15  Independence Day
+2026-08-26  Prophet Mohammad's Birthday (Id-E-Milad)
+2026-09-14  Ganesh Chaturthi
+2026-10-02  Mahatma Gandhi's Birthday
+2026-10-20  Dussehra (Vijay Dashmi)
+2026-11-08  Diwali (Deepavali)
+2026-11-24  Guru Nanak's Birthday
+2026-12-25  Christmas Day
+2027-01-14  Makar Sankranti / Magha Bihu
+2027-01-26  Republic Day
+2027-03-10  Id-ul-Fitr*
+2027-03-23  Holi
+2027-03-26  Good Friday
+2027-04-07  Gudi Padava / Ugadi
+2027-04-19  Mahavir Jayanti
+2027-05-17  Id-ul-Zuha (Bakri Id)*
+2027-05-20  Buddha Purnima
+2027-06-16  Muharram*
+2027-08-15  Independence Day
+2027-10-02  Mahatma Gandhi's Birthday
+2027-10-09  Dussehra (Vijay Dashmi)
+2027-10-29  Diwali (Deepavali)
+2027-11-24  Guru Nanak's Birthday
+2027-12-25  Christmas Day

@@ -347,3 +347,20 @@ def test_rejected_push_is_rebuilt_on_origin(tmp_path, monkeypatch):
     assert final["a@x"]["status"] == "sent" and final["a@x"]["message_id"] == "<1>"   # runner's send kept
     assert final["new@x"]["status"] == "approved"                                       # laptop's queue kept
     assert S.load_state(check / "data/runner_state.json")["last_sent_at"] == "2026-11-24 09:30:00"
+
+
+# ------------------------------------------------------------------ daily queueing
+def test_queue_today_rules():
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import queue_today as Q
+    hol = {"2026-11-24"}
+    assert "holiday" in Q.skip_reason(at("00:00", "2026-11-24"), hol)
+    assert "Saturday" in Q.skip_reason(at("00:00", "2026-11-28"), hol)
+    assert Q.skip_reason(at("00:00", "2026-11-25"), hol) == ""
+    rows = [row(f"p{i}@x", send_at="") for i in range(100)] + [row("old@x", status="sent", send_at="")]
+    chosen, already = Q.pick(rows, "2026-11-25")
+    assert len(chosen) == 90 and already == 0 and all(r["status"] == "approved" for r in chosen)
+    rows[0]["send_at"] = "2026-11-25 08:30"            # 1 already queued today -> 89 more at most
+    chosen, already = Q.pick(rows, "2026-11-25")
+    assert already == 1 and len(chosen) == 89
+    assert Q.holidays(ROOT / "data" / "holidays.txt") >= {"2026-11-24", "2026-12-25"}
