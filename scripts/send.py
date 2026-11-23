@@ -36,10 +36,20 @@ ROOT = Path(__file__).resolve().parent.parent
 BATCH = ROOT / "data" / "batch.csv"
 RESUME = ROOT / "resume.pdf"
 SMTP_HOST, SMTP_PORT = "smtp-auth.iitb.ac.in", 587
-FROM_NAME, FROM_ADDR = "Arnav Jain", "25b2704@iitb.ac.in"
+FROM_NAME = "Arnav Jain"
+FROM_ADDR = os.environ.get("SENDER_EMAIL", "").strip() or "25b2704@iitb.ac.in"
 IST = timezone(timedelta(hours=5, minutes=30))
 FIELDS = ["name", "surname", "institute", "email", "field", "subject_topic", "opening_line",
-          "quant_line", "profile_url", "status", "sent_at", "message_id"]
+          "quant_line", "profile_url", "status", "sent_at", "message_id",
+          # used by the GitHub runner (scripts/runner/tick.py)
+          "send_at", "replied_at", "reply_from", "reply_note", "fail_reason"]
+
+
+def credentials():
+    """(login name, password/token) from the environment. New names first, old names as fallback."""
+    user = (os.environ.get("SMTP_USER") or os.environ.get("IITB_USERNAME") or "").strip()
+    token = (os.environ.get("SENDER_APP_TOKEN") or os.environ.get("IITB_PASSWORD") or "").strip()
+    return user, token
 # Extra paragraph (between the projects and "I am very eager...") for professors with quantitative research.
 QUANT_LINE = "\nI am eager to apply my data science skills to your quantitative research."
 

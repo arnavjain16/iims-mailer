@@ -8,3 +8,4 @@ __pycache__/
 # third-party professor list: inspected only, not used as a data source
 Profs Database*.xlsx
 batch_preview.html
+.pytest_cache/
