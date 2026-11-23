@@ -13,7 +13,7 @@ import ssl
 HOST, PORT = "smtp-auth.iitb.ac.in", 587
 
 user = (input("IITB login name [25b2704]: ").strip() or "25b2704").lower()
-password = getpass.getpass("IITB password (hidden, not saved): ")
+password = getpass.getpass("IITB SSO access token (hidden, not saved): ").strip()  # no stray spaces/newlines
 print(f"Using login name: {user!r}")
 print(f"Password length typed: {len(password)} characters; "
       f"starts/ends with a space: {password[:1] == ' ' or password[-1:] == ' '}; "
