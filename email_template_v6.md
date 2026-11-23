@@ -27,7 +27,7 @@ Arnav Jain
 
 --
 Arnav Jain
-B.S., Centre for Multidisciplinary Education, Minor in Artificial Intelligence and Data Science
+B.S., Centre for Multidisciplinary Education
 Indian Institute of Technology Bombay
 25b2704@iitb.ac.in
 

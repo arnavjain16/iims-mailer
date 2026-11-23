@@ -39,7 +39,9 @@ SMTP_HOST, SMTP_PORT = "smtp-auth.iitb.ac.in", 587
 FROM_NAME, FROM_ADDR = "Arnav Jain", "25b2704@iitb.ac.in"
 IST = timezone(timedelta(hours=5, minutes=30))
 FIELDS = ["name", "surname", "institute", "email", "field", "subject_topic", "opening_line",
-          "profile_url", "status", "sent_at", "message_id"]
+          "quant_line", "profile_url", "status", "sent_at", "message_id"]
+# Extra paragraph (between the projects and "I am very eager...") for professors with quantitative research.
+QUANT_LINE = "\nI am eager to apply my data science skills to your quantitative research."
 
 # Project paragraphs, by field (email_template_v6.md). Every fact comes from resume.pdf.
 PROJECTS = {
@@ -55,7 +57,7 @@ BODY = """Dear Professor {surname},
 I am an undergraduate at IIT Bombay, currently pursuing a Minor in AI & Data Science, and I am writing to express my interest in your research. {opening_line}
 
 {projects}
-
+{quant}
 I am very eager to learn and willing to pick up any new skills your projects need. I would be grateful for the opportunity to contribute to your research in any role you find useful, under your guidance.
 
 My resume is attached for your review. Thank you for your time and consideration.
@@ -65,7 +67,7 @@ Arnav Jain
 
 --
 Arnav Jain
-B.S., Centre for Multidisciplinary Education, Minor in Artificial Intelligence and Data Science
+B.S., Centre for Multidisciplinary Education
 Indian Institute of Technology Bombay
 25b2704@iitb.ac.in
 """
@@ -78,8 +80,9 @@ def render(row):
     if row["field"] not in PROJECTS:
         raise ValueError(f"{row['name']}: field must be one of A-E")
     subject = f"Interest in Research on {row['subject_topic'].strip()}"
+    quant = QUANT_LINE + "\n" if row.get("quant_line", "").strip().lower() == "yes" else ""
     body = BODY.format(surname=row["surname"].strip(), opening_line=row["opening_line"].strip(),
-                       projects=PROJECTS[row["field"]])
+                       projects=PROJECTS[row["field"]], quant=quant)
     return subject, body
 
 
