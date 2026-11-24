@@ -108,7 +108,17 @@ def _excerpt(msg, limit=200):
             break
         if line.strip():
             lines.append(line.strip())
-    return " ".join(lines)[:limit]
+    return redact(" ".join(lines))[:limit]
+
+
+# The repo (and so every Issue) is public: never copy a phone number or email address from a reply.
+_EMAIL = re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+")
+_PHONE = re.compile(r"(?<!\w)\+?\d[\d\s().-]{6,}\d(?!\w)")
+
+
+def redact(text):
+    text = _EMAIL.sub("[email hidden]", text or "")
+    return _PHONE.sub(lambda m: "[number hidden]" if sum(c.isdigit() for c in m.group()) >= 7 else m.group(), text)
 
 
 class Replies:

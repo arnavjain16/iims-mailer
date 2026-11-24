@@ -179,8 +179,10 @@ class Runner:
                 seen.add(m["uid"])
                 continue
             r = m["row"]
-            body = (f"**From:** {m['from']}\n**Professor:** {r['name']} ({r['institute']})\n"
-                    f"**Subject:** {m['subject']}\n\n> {m['excerpt']}")
+            redact = getattr(d.errors, "redact", lambda s: s)      # public repo: hide numbers/emails
+            body = (f"**Professor:** {r['name']} ({r['institute']})\n"
+                    f"**Subject:** {redact(m['subject'])}\n\n> {redact(m['excerpt'])}\n\n"
+                    "_Phone numbers and email addresses are hidden here; the full reply is in the IITB inbox._")
             if d.issues.create(f"Reply: {r['name']} ({r['institute']})", body, "reply"):
                 seen.add(m["uid"])                      # seen ONLY after its Issue exists
                 r.update(status="replied", replied_at=S.stamp(d.clock.now()), reply_from=m["from"],

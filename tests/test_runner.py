@@ -364,3 +364,25 @@ def test_queue_today_rules():
     chosen, already = Q.pick(rows, "2026-11-25")
     assert already == 1 and len(chosen) == 89
     assert Q.holidays(ROOT / "data" / "holidays.txt") >= {"2026-11-24", "2026-12-25"}
+
+
+def test_redact_hides_phone_numbers_and_emails():
+    out = A.redact("Call me on 9619657377 or +91 96196 57377, mail x.y@iimmumbai.ac.in. Room 204, 2026.")
+    assert "9619657377" not in out and "96196" not in out and "@" not in out
+    assert "Room 204, 2026" in out
+
+
+def test_reply_issue_body_is_redacted():
+    rows = [row("a@x", status="sent", sent_at="2026-11-24 09:30:00", message_id="<m1>")]
+    rep = FakeReplies([{"uid": 9, "email": "a@x"}])
+    rep.poll_orig = rep.poll
+    def poll(rows_, st):
+        uv, out = rep.poll_orig(rows_, st)
+        out[0]["excerpt"] = "Happy to discuss, call 9619657377"
+        return uv, out
+    rep.poll = poll
+    r, d = make(rows, at("12:00"), replies=rep)
+    bodies = []
+    d.issues.create = lambda title, body, label: bodies.append(body) or True
+    r.iteration()
+    assert bodies and "9619657377" not in bodies[0] and "[number hidden]" in bodies[0]
