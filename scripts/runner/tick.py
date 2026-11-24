@@ -179,15 +179,17 @@ class Runner:
                 seen.add(m["uid"])
                 continue
             r = m["row"]
-            redact = getattr(d.errors, "redact", lambda s: s)      # public repo: hide numbers/emails
-            body = (f"**Professor:** {r['name']} ({r['institute']})\n"
-                    f"**Subject:** {redact(m['subject'])}\n\n> {redact(m['excerpt'])}\n\n"
-                    "_Phone numbers and email addresses are hidden here; the full reply is in the IITB inbox._")
-            if d.issues.create(f"Reply: {r['name']} ({r['institute']})", body, "reply"):
-                seen.add(m["uid"])                      # seen ONLY after its Issue exists
-                r.update(status="replied", replied_at=S.stamp(d.clock.now()), reply_from=m["from"],
-                         reply_note=m["subject"][:120])
-                changed = True
+            if self.c.reply_issues:                       # off by default: the repo is public
+                redact = getattr(d.errors, "redact", lambda s: s)
+                body = (f"**Professor:** {r['name']} ({r['institute']})\n"
+                        f"**Subject:** {redact(m['subject'])}\n\n> {redact(m['excerpt'])}\n\n"
+                        "_Phone numbers and email addresses are hidden here; the full reply is in the IITB inbox._")
+                if not d.issues.create(f"Reply: {r['name']} ({r['institute']})", body, "reply"):
+                    continue                              # not seen until its Issue exists
+            seen.add(m["uid"])
+            r.update(status="replied", replied_at=S.stamp(d.clock.now()), reply_from=m["from"],
+                     reply_note="reply received (see inbox)")
+            changed = True
         st["seen_uids"] = sorted(seen)
         return changed
 
@@ -291,6 +293,7 @@ def main():
     c = Cfg()
     c.dry_run_to = os.environ.get("DRY_RUN_TO", "").strip()
     c.dry_run_limit = int(os.environ.get("DRY_RUN_LIMIT", "2") or 2)
+    c.reply_issues = os.environ.get("REPLY_ISSUES", "").strip().lower() == "true"   # public repo: keep off
     c.sender_email = sender_email
     repo = os.environ.get("GITHUB_REPOSITORY", "")
 

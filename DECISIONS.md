@@ -199,3 +199,4 @@ These are reference only. Which items appear in the email is still to be decided
 - 2026-11-24: user moved today's 90 to 08:30 (08:30 -> ~10:00).
 - 2026-11-24: Line check before sending: all lines match the professors' official research sections except Debabrata Das (IIM Mumbai), whose 'Area of Research' is empty (line had come from Teaching Interests). Rewritten from his published paper titles.
 - 2026-11-24: Public Issue #2 (contained a professor's phone number) moved, with history, to the private repo arnavjain16/iims-mailer-replies (#1). Runner now hides phone numbers and email addresses in reply Issues (the public repo's Issues are public).
+- 2026-11-24: All 4 reply Issues moved to the private repo; runner no longer posts reply Issues in the public repo (REPLY_ISSUES off). Replies are still detected and marked 'replied'; system alerts (needs-attention) still post.

@@ -143,6 +143,7 @@ def make(rows, start, sending=True, dry=None, mail_fail=None, replies=None, issu
     d.chain = chain
     c = T.Cfg()
     c.dry_run_to, c.dry_run_limit, c.sender_email = dry or "", 2, "me@iitb.ac.in"
+    c.reply_issues = True
     return T.Runner(d, c), d
 
 
@@ -386,3 +387,13 @@ def test_reply_issue_body_is_redacted():
     d.issues.create = lambda title, body, label: bodies.append(body) or True
     r.iteration()
     assert bodies and "9619657377" not in bodies[0] and "[number hidden]" in bodies[0]
+
+
+def test_replies_without_public_issues_still_marked():
+    rows = [row("a@x", status="sent", sent_at="2026-11-24 09:30:00", message_id="<m1>")]
+    r, d = make(rows, at("12:00"), replies=FakeReplies([{"uid": 5, "email": "a@x"}]))
+    r.c.reply_issues = False
+    r.iteration()
+    assert d.issues.made == []
+    assert d.store.rows[0]["status"] == "replied" and 5 in d.store.st["seen_uids"]
+    assert "@" not in d.store.rows[0]["reply_note"]
