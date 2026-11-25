@@ -10,3 +10,5 @@ Profs Database*.xlsx
 batch_preview.html
 .pytest_cache/
 batch2_preview.html
+call_prep_*.html
+*_preview.html
